@@ -1,0 +1,17 @@
+{
+  "name": "bondhu-billboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BONDHU — Animated Billboard & Showcase",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "bondhu",
+    "billboard",
+    "robot-companion",
+    "showcase"
+  ]
+}
+

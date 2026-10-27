@@ -1,0 +1,1181 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BONDHU — আপনার পরিবারের রোবট সঙ্গী</title>
+<meta name="description" content="বন্ধু — বাংলায় কথা বলা, প্রতিদিনের যত্নে আপনার পরিবারের রোবট সঙ্গী।">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&display=swap">
+<style>
+@font-face{font-family:Bangla;src:url('billboard-assets/bangla.ttf') format('truetype');font-display:swap}
+@font-face{font-family:Bangla;src:url('billboard-assets/bangla-bold.ttf') format('truetype');font-weight:600 900;font-display:swap}
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg-main: #f5f8f3;
+  --ink-primary: #113628;
+  --ink-secondary: #365646;
+  --ink-muted: #537564;
+  --accent-emerald: #1c7a52;
+  --accent-mint: #27a86e;
+  --accent-gold: #c98218;
+  --border-light: rgba(28, 122, 82, 0.2);
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --card-shadow: 0 12px 36px rgba(17, 54, 40, 0.08);
+}
+
+body{
+  margin: 0;
+  background: var(--bg-main);
+  color: var(--ink-primary);
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', Bangla, sans-serif;
+  overflow: hidden;
+  height: 100svh;
+  -webkit-font-smoothing: antialiased;
+}
+
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--accent-mint);outline-offset:3px}
+
+/* Main Billboard Canvas - Daylight Eye-Soothing Theme */
+.billboard{
+  height: 100svh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 72% 42%, #d8ebd2 0%, #f5f8f3 62%), #f5f8f3;
+  color: var(--ink-primary);
+  transition: background 1.2s ease;
+}
+.billboard[data-scene="4"]{
+  background: radial-gradient(ellipse at 72% 45%, #fae6de 0%, #f6f8f4 65%), #f6f8f4;
+}
+.billboard[data-scene="6"]{
+  background: radial-gradient(ellipse at 72% 45%, #fff2d4 0%, #f6f8f4 65%), #f6f8f4;
+}
+
+/* Subtle daylight cinema backdrop */
+.cinema-backdrop{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.08;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cinema-backdrop img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(24px) saturate(1.2);
+  transform: scale(1.08);
+}
+
+/* Header Bar - Zero Collision Dock */
+header{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 74px;
+  padding: 0 4%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  z-index: 10;
+  background: linear-gradient(180deg, rgba(245, 248, 243, 0.98) 0%, rgba(245, 248, 243, 0.8) 75%, transparent 100%);
+  backdrop-filter: blur(10px);
+}
+.brand{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.brand-mark{
+  width: 44px;
+  height: 38px;
+  border-radius: 12px;
+  background: #174d3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 14px rgba(23, 77, 61, 0.2);
+}
+.brand-mark i{width:7px;height:14px;border-radius:6px;background:#96f183}
+.brand-name{
+  font-family: 'Hind Siliguri', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--ink-primary);
+  line-height: 1.15;
+}
+.brand-name .brand-subname{
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent-emerald);
+  margin-left: 6px;
+}
+.brand-name small{
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  margin-top: 1px;
+}
+.tag{
+  font-size: 14px;
+  font-weight: 700;
+  color: #17543d;
+  background: rgba(39, 168, 110, 0.12);
+  border: 1px solid rgba(39, 168, 110, 0.28);
+  border-radius: 20px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.tag:before{
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-mint);
+  box-shadow: 0 0 0 4px rgba(39, 168, 110, 0.2);
+}
+
+/* Header Controls */
+.controls{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.controls button{
+  border: 1.5px solid var(--border-light);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--ink-primary);
+  border-radius: 10px;
+  padding: 8px 13px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Hind Siliguri', sans-serif;
+  box-shadow: 0 2px 8px rgba(17, 54, 40, 0.05);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.controls button:hover{
+  background: #edf5eb;
+  border-color: var(--accent-emerald);
+  color: #0d291e;
+}
+.controls button[aria-pressed="true"]{
+  background: #174d3d;
+  color: #ffffff;
+  border-color: #174d3d;
+  box-shadow: 0 4px 12px rgba(23, 77, 61, 0.25);
+}
+.controls .lang-btn{
+  background: #def0db;
+  color: #113628;
+  border: 1.5px solid #27a86e;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.controls .lang-btn:hover{
+  background: #174d3d;
+  color: #ffffff;
+  border-color: #174d3d;
+}
+
+/* LEFT COLUMN: Clean, Big, Bold Headline & Description */
+.copy{
+  position: absolute;
+  left: 4%;
+  top: 80px;
+  bottom: 84px;
+  width: 40%;
+  max-width: 580px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.eyebrow{
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: clamp(13px, 1.1vw, 16px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent-emerald);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.eyebrow:before{
+  content: '';
+  width: 32px;
+  height: 2.5px;
+  background: var(--accent-mint);
+  border-radius: 2px;
+}
+h1{
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: clamp(34px, 3.8vw, 66px);
+  line-height: 1.22;
+  letter-spacing: -1.2px;
+  font-weight: 800;
+  color: var(--ink-primary);
+  margin: 6px 0 16px;
+  text-shadow: 0 2px 12px rgba(17, 54, 40, 0.05);
+}
+h1 em{
+  font-style: normal;
+  color: var(--accent-emerald);
+}
+.description{
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: clamp(16px, 1.4vw, 24px);
+  color: var(--ink-secondary);
+  line-height: 1.62;
+  font-weight: 500;
+  max-width: 500px;
+  margin: 0;
+}
+.feature-label{
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  border-top: 1.5px solid var(--border-light);
+  padding-top: 16px;
+  font-size: clamp(14px, 1.15vw, 18px);
+  font-family: 'Hind Siliguri', sans-serif;
+  font-weight: 700;
+  color: #1a563d;
+}
+.feature-label span{
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  background: #def0db;
+  color: #113628;
+  padding: 3px 10px;
+  border-radius: 6px;
+  letter-spacing: 1px;
+}
+
+/* RIGHT COLUMN: Cartoon & Video Stage */
+.cartoon-visual{
+  position: absolute;
+  left: 46%;
+  right: 4%;
+  top: 78px;
+  bottom: 84px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.cartoon-visual > svg#cartoon{
+  width: 100%;
+  height: auto;
+  max-height: calc(100% - 66px);
+  object-fit: contain;
+  overflow: visible;
+  filter: drop-shadow(0 14px 28px rgba(22, 60, 45, 0.09));
+  transition: opacity 0.6s ease;
+}
+
+/* Cartoon Internal Highlights */
+.cartoon-visual #cartoonRobot{overflow:visible}
+.cartoon-visual .eyes,.cartoon-visual .sensor{animation:none}
+
+/* Human Tracking Video Overlay (Scene 5) */
+.tracking-video{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 66px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+.tracking-video video{
+  max-width: 100%;
+  max-height: calc(100% - 50px);
+  object-fit: contain;
+  border-radius: 16px;
+  border: 2px solid var(--border-light);
+  box-shadow: 0 16px 45px rgba(17, 54, 40, 0.15);
+  background: #0d1e16;
+}
+.tracking-video .video-label{
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1.5px solid var(--accent-mint);
+  border-radius: 10px;
+  padding: 8px 20px;
+  color: var(--ink-primary);
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(17, 54, 40, 0.08);
+}
+.tracking-video .video-label span{
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  margin-top: 2px;
+}
+.billboard[data-scene="5"] .tracking-video{
+  opacity: 1;
+  pointer-events: auto;
+}
+.billboard[data-scene="5"] .cartoon-visual > svg#cartoon{
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+/* Story Caption Bar */
+.story-caption{
+  width: 100%;
+  max-width: 680px;
+  min-height: 52px;
+  background: var(--card-bg);
+  backdrop-filter: blur(18px);
+  border: 1.5px solid var(--border-light);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  margin-top: 10px;
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: clamp(14px, 1.25vw, 19px);
+  font-weight: 700;
+  color: var(--ink-primary);
+  z-index: 6;
+}
+.story-caption > span:first-child{
+  background: #174d3d;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.scene-clock{
+  margin-left: auto;
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--accent-emerald);
+  background: #eaf4e8;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+/* Signal Flow (Scene 4) */
+.signal-flow{
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid var(--border-light);
+  padding: 10px 16px;
+  border-radius: 16px;
+  z-index: 6;
+  box-shadow: var(--card-shadow);
+}
+.signal-flow[hidden]{display:none}
+.signal-flow span{
+  color: var(--ink-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Hind Siliguri', sans-serif;
+}
+.signal-flow span.active{
+  background: var(--accent-emerald);
+  color: #ffffff;
+  border-color: var(--accent-emerald);
+}
+.signal-flow i{font-style:normal;color:var(--accent-mint);font-weight:800}
+
+/* Family Concept Showcase (Scene 9) */
+.family-showcase{
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  transition: opacity 0.8s ease;
+}
+.family-showcase > img{
+  max-width: 100%;
+  max-height: calc(100% - 60px);
+  object-fit: contain;
+  border-radius: 20px;
+  box-shadow: 0 16px 45px rgba(17, 54, 40, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+}
+.concept-label{
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(18px);
+  border: 1.5px solid var(--accent-emerald);
+  border-radius: 14px;
+  padding: 10px 22px;
+  color: var(--ink-primary);
+  white-space: nowrap;
+  font: 700 18px 'Hind Siliguri', sans-serif;
+  box-shadow: var(--card-shadow);
+}
+.concept-label span{
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+  text-align: center;
+  color: var(--ink-secondary);
+  margin-top: 3px;
+}
+.billboard.showcase .copy,.billboard.showcase .demo-note{visibility:hidden}
+.billboard.showcase .cartoon-visual{left:5%;right:5%}
+.billboard.showcase #cartoon{visibility:hidden}
+
+/* Bottom Bar - Timeline Chapters & Signature */
+footer.bottom{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 80px;
+  padding: 0 4%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  z-index: 10;
+  background: linear-gradient(0deg, rgba(245, 248, 243, 0.98) 0%, rgba(245, 248, 243, 0.85) 65%, transparent 100%);
+  backdrop-filter: blur(8px);
+}
+.chapters{
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  max-width: 760px;
+}
+.chapter{
+  flex: 1;
+  background: none;
+  border: 0;
+  padding: 8px 0;
+  text-align: left;
+  color: #4a6a59;
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.chapter .track{
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: #d4e3d1;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.chapter .fill{
+  height: 100%;
+  width: 0;
+  display: block;
+  background: var(--accent-emerald);
+  border-radius: 2px;
+}
+.chapter[aria-current="true"]{
+  color: var(--ink-primary);
+  font-weight: 800;
+}
+.signature{
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink-primary);
+  margin: 0;
+  text-align: right;
+  flex-shrink: 0;
+}
+.signature small{
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  margin-top: 3px;
+}
+.demo-note{
+  position: absolute;
+  right: 4%;
+  bottom: 84px;
+  font-family: 'Hind Siliguri', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #4a6a5b;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 2px 6px rgba(17, 54, 40, 0.05);
+}
+
+/* Timing Panel Modal */
+.timing-panel{
+  position: absolute;
+  top: 76px;
+  right: 20px;
+  z-index: 30;
+  width: 370px;
+  max-height: calc(100% - 160px);
+  overflow-y: auto;
+  background: #fffffffa;
+  backdrop-filter: blur(20px);
+  border: 1.5px solid var(--border-light);
+  border-radius: 18px;
+  box-shadow: 0 16px 50px rgba(17, 54, 40, 0.16);
+  padding: 22px;
+  font-size: 13px;
+  color: var(--ink-primary);
+}
+.timing-panel[hidden]{display:none}
+.timing-heading{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 19px;
+  font-weight: 800;
+}
+.timing-heading button{
+  border: 0;
+  background: none;
+  font: 26px Arial;
+  color: var(--accent-emerald);
+}
+.timing-panel p{color:var(--ink-secondary);margin:6px 0 16px}
+.duration-row{
+  display: grid;
+  grid-template-columns: 100px 1fr 54px;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #e4ede2;
+  font-weight: 600;
+}
+.duration-row input[type=range]{width:100%;accent-color:var(--accent-emerald)}
+.duration-row input[type=number],.apply-all input{
+  width: 52px;
+  border: 1px solid #c9d8c6;
+  border-radius: 6px;
+  background: #f5f8f3;
+  padding: 5px;
+  color: var(--ink-primary);
+  font-weight: 700;
+}
+.speed-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.speed-row select{
+  padding: 6px 10px;
+  border: 1px solid #c9d8c6;
+  border-radius: 8px;
+  background: #f5f8f3;
+  color: var(--ink-primary);
+  font-family: inherit;
+  font-weight: 600;
+}
+.apply-all{display:flex;align-items:center;gap:8px;margin-top:16px;font-weight:600}
+.apply-all button,#resetTiming{
+  background: #e4efe1;
+  border: 0;
+  border-radius: 8px;
+  padding: 7px 12px;
+  color: var(--ink-primary);
+  font-weight: 700;
+}
+.timing-summary{margin:14px 0;color:var(--accent-emerald);font-weight:700}
+.timing-panel small{display:block;margin-top:12px;color:var(--ink-muted);font-size:11px}
+
+/* Notification Popups */
+.status{
+  position: absolute;
+  bottom: 84px;
+  right: 20px;
+  max-width: 320px;
+  background: #174d3d;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Hind Siliguri', sans-serif;
+  box-shadow: 0 10px 30px rgba(17, 54, 40, 0.25);
+  z-index: 25;
+}
+.status:empty{display:none}
+
+.entrance{animation:enter .7s cubic-bezier(0.16,1,0.3,1) both}
+body.clean .controls,body.clean .status,body.clean .timing-panel{display:none}
+body.paused .entrance{animation:none!important}
+body.paused *,body.paused *:before,body.paused *:after{animation-play-state:paused!important}
+
+@keyframes enter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{50%{transform:translateY(-8px)}}
+@keyframes blink{0%,43%,47%,100%{transform:scaleY(1)}45%{transform:scaleY(.08)}}
+@keyframes tilt{50%{transform:rotate(3deg)}}
+@keyframes pulse{50%{opacity:.4}}
+@keyframes wave{to{transform:scaleY(.3)}}
+@keyframes travel{50%{transform:translateX(20px)}}
+@keyframes light{0%,45%,100%{opacity:.15}55%,90%{opacity:1}}
+
+/* RESPONSIVE LAYOUT FOR LAPTOPS (1024px to 1440px) */
+@media (max-width: 1400px){
+  h1{font-size: clamp(30px, 3.4vw, 54px); margin: 6px 0 14px;}
+  .description{font-size: clamp(15px, 1.3vw, 20px);}
+  .chapter{font-size: 12px;}
+  .signature{font-size: 16px;}
+}
+
+/* RESPONSIVE FOR TABLET LANDSCAPE & COMPACT LAPTOPS (880px to 1024px) */
+@media (max-width: 1024px) and (min-width: 769px){
+  header{height: 66px; padding: 0 3%;}
+  footer.bottom{height: 72px; padding: 0 3%;}
+  .copy{left: 3%; top: 72px; bottom: 78px; width: 41%;}
+  .cartoon-visual{left: 46%; right: 3%; top: 72px; bottom: 78px;}
+  h1{font-size: clamp(26px, 3vw, 42px);}
+  .description{font-size: 15px;}
+  .chapter{font-size: 11px;}
+  .signature{font-size: 14px;}
+  .signature small{display:none;}
+  .controls button{padding: 6px 10px; font-size: 12px;}
+  .tag{padding: 4px 10px; font-size: 12px;}
+}
+
+/* RESPONSIVE FOR TABLET PORTRAIT & MOBILE (Under 768px) */
+@media (max-width: 768px){
+  .billboard{height: 100svh; min-height: 720px; overflow-y: auto;}
+  header{height: 56px; padding: 0 4%;}
+  .brand-name{font-size: 18px;}
+  .brand-name small{display: none;}
+  .tag{display: none;}
+  .controls button{padding: 5px 8px; font-size: 11px;}
+  
+  .copy{
+    position: absolute;
+    left: 4%;
+    right: 4%;
+    top: 60px;
+    width: 92%;
+    max-width: none;
+    bottom: auto;
+    height: 30%;
+    justify-content: flex-start;
+  }
+  h1{font-size: clamp(22px, 5.2vw, 32px); margin: 4px 0 8px; line-height: 1.25;}
+  .description{font-size: 14px; line-height: 1.5;}
+  .feature-label{margin-top: 8px; padding-top: 8px; font-size: 13px;}
+  
+  .cartoon-visual{
+    position: absolute;
+    left: 2%;
+    right: 2%;
+    top: 36%;
+    bottom: 74px;
+    width: 96%;
+  }
+  .cartoon-visual > svg#cartoon{max-height: calc(100% - 50px);}
+  .story-caption{min-height: 44px; padding: 6px 12px; font-size: 13px; margin-top: 4px;}
+  
+  footer.bottom{
+    height: 70px;
+    padding: 0 3%;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+  .chapters{width: 100%; max-width: none; gap: 4px;}
+  .chapter{font-size: 9px; padding: 3px 0;}
+  .signature{display: none;}
+  .demo-note{display: none;}
+  .timing-panel{width: calc(100% - 24px); right: 12px; top: 62px;}
+}
+
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body class="show-controls">
+<main class="billboard" id="billboard" data-scene="0" aria-label="বন্ধু অ্যানিমেটেড বিজ্ঞাপন">
+<div class="cinema-backdrop" aria-hidden="true"><img src="billboard-assets/product-family-concept.jpg" alt=""></div>
+<header>
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
+    <div class="brand-name" id="brandName">বন্ধু <span class="brand-subname">BONDHU</span><small>যত্ন · সংযোগ · আপনজন</small></div>
+  </div>
+  <div class="tag"><span id="brandTag">আপনার পরিবারের রোবট সঙ্গী</span></div>
+  <div class="controls">
+    <button id="langToggle" class="lang-btn" aria-label="Switch Language / ভাষা পরিবর্তন">EN</button>
+    <button id="timingButton" aria-expanded="false" aria-controls="timingPanel">◷ সময় ও গতি</button>
+    <button id="sound" aria-pressed="false">♫ বাংলা ভয়েস চালু</button>
+    <button id="pause" aria-pressed="false" aria-label="অ্যানিমেশন থামান">Ⅱ বিরতি</button>
+    <button id="fullscreen" aria-label="পূর্ণ পর্দা">⛶ পূর্ণ পর্দা</button>
+  </div>
+</header>
+<section class="copy" id="copy"><div class="eyebrow" id="eyebrow"></div><h1 id="headline"></h1><p class="description" id="description"></p><div class="feature-label"><span id="sceneNumber"></span><div id="feature"></div></div></section>
+<div class="visual cartoon-visual">
+<div class="tracking-video" id="trackingVideo">
+<video id="trackingVideoEl" muted loop playsinline preload="metadata">
+<source src="tracking-DHNTCYm7.mp4" type="video/mp4">
+<source src="tracking-DHNTCYm7.mp4" type="video/mp4">
+</video>
+<div class="video-label" id="trackingVideoLabel">রিয়েল-টাইম হিউম্যান ট্র্যাকিং <span>ক্যামেরা ভিশনে মানুষকে শনাক্ত করে সঙ্গে চলার প্রযুক্তি</span></div>
+</div>
+<div id="familyShowcase" class="family-showcase" aria-hidden="true"><img id="familyImage" src="billboard-assets/product-family-concept.jpg" alt="বন্ধু ডেস্ক, মিনি ও টল — ভবিষ্যৎ ধারণা-চিত্র"><div class="concept-label" id="conceptLabel">ডেস্ক · মিনি · টল <span>ভবিষ্যৎ ধারণা-চিত্র</span></div></div>
+<svg id="cartoon" viewBox="0 0 1000 700" role="img" aria-labelledby="cartoonTitle cartoonDesc">
+<title id="cartoonTitle">বন্ধু আপনার ঘরে</title><desc id="cartoonDesc">একজন প্রবীণ মানুষ ও বন্ধু রোবটের দৈনন্দিন যত্নের অ্যানিমেটেড গল্প।</desc>
+<defs>
+ <linearGradient id="wall" x2="0" y2="1"><stop stop-color="#f0e9d6"/><stop offset="1" stop-color="#e4dfca"/></linearGradient>
+ <linearGradient id="floor" x2="0" y2="1"><stop stop-color="#d9b791"/><stop offset="1" stop-color="#c79d79"/></linearGradient>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#b5dfe0"/><stop offset="1" stop-color="#e2efe1"/></linearGradient>
+ <radialGradient id="warmLight"><stop stop-color="#ffed95" stop-opacity=".8"/><stop offset="1" stop-color="#ffed95" stop-opacity="0"/></radialGradient>
+ <clipPath id="roomClip"><rect x="15" y="20" width="970" height="650" rx="42"/></clipPath>
+ <filter id="softShadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#183829" flood-opacity=".12"/></filter>
+</defs>
+<g clip-path="url(#roomClip)">
+ <path d="M15 20h970v650H15Z" fill="url(#wall)"/>
+ <path d="M15 490h970v180H15Z" fill="url(#floor)"/><path d="M15 488h970" stroke="#aa9474" stroke-width="8"/>
+ <g stroke="#ba9370" opacity=".5"><path d="M15 550h970M15 615h970M160 490 90 670M420 490 400 670M680 490 710 670M890 490 960 670"/></g>
+ <g transform="translate(75 105)"><rect x="-12" y="-12" width="244" height="222" rx="13" fill="#c9b890"/><rect width="220" height="194" rx="6" fill="url(#sky)"/><circle id="sun" cx="164" cy="45" r="25" fill="#fff6ba"/><g id="clouds" fill="#fff" opacity=".8"><path d="M18 67q5-28 29-16 17-30 41-1 30-4 28 21H18Z"/><path d="M118 130q6-22 25-14 22-23 39 1 26 0 25 17h-89Z"/></g><path d="M0 160q40-45 90 0 50-48 130-10v44H0" fill="#a2bd87"/><path d="M110 0v194M0 96h220" stroke="#fff7e2" stroke-width="10"/><path d="M-19 202h260" stroke="#fff7e2" stroke-width="14" stroke-linecap="round"/><path d="M-28-15v229M248-15v229" stroke="#819d80" stroke-width="25"/></g>
+ <g transform="translate(393 100)"><rect width="100" height="125" rx="8" fill="#b39571"/><rect x="8" y="8" width="84" height="109" fill="#fff8e8"/><path d="M20 91 51 36l30 55" fill="#98b17e"/><circle cx="70" cy="30" r="10" fill="#e6b765"/></g>
+ <g id="wallClock" transform="translate(847 125)"><circle r="47" fill="#fff9e7" stroke="#8f9f7c" stroke-width="8"/><g stroke="#80906e" stroke-width="3"><path d="M0-34v6M34 0h-6M0 34v-6M-34 0h6"/></g><path id="clockHand" d="M0 0V-28M0 0h20" fill="none" stroke="#345c42" stroke-width="5" stroke-linecap="round"/><circle r="5" fill="#345c42"/></g>
+ <g id="sofa" transform="translate(510 366)"><rect x="14" y="-48" width="265" height="133" rx="30" fill="#839b72"/><path d="M100-36v108M193-36v108" stroke="#718b62" stroke-width="3"/><rect y="32" width="295" height="98" rx="22" fill="#5e805c"/><rect x="18" y="27" width="259" height="42" rx="16" fill="#9aaf85"/><rect x="-4" y="4" width="39" height="115" rx="16" fill="#719363"/><rect x="260" y="4" width="39" height="115" rx="16" fill="#719363"/><path d="M26 130v22M268 130v22" stroke="#6b5941" stroke-width="13"/><path d="m202-20 46 10-8 48-45-12Z" fill="#dfc989"/></g>
+ <g transform="translate(922 425)"><path d="M0 9V-95" stroke="#5a7c4d" stroke-width="7"/><g fill="#779c62"><ellipse cx="-19" cy="-78" rx="15" ry="35" transform="rotate(-40 -19 -78)"/><ellipse cx="19" cy="-46" rx="15" ry="35" transform="rotate(40 19 -46)"/><ellipse cx="-21" cy="-22" rx="15" ry="35" transform="rotate(-48 -21 -22)"/></g><path d="M-36 0h72L25 70h-50Z" fill="#bc7959"/><path d="M-40 0h80" stroke="#d6966d" stroke-width="13"/></g>
+ <ellipse cx="494" cy="568" rx="345" ry="64" fill="#6d998a"/><ellipse cx="494" cy="568" rx="320" ry="51" fill="none" stroke="#aec4a5" stroke-width="3"/>
+ <g id="ceilingLight"><path d="M681 20v68" stroke="#63755b" stroke-width="5"/><path d="m649 80-32 53h128l-32-53Z" fill="#537d67"/><ellipse cx="681" cy="133" rx="64" ry="9" fill="#d8c18a"/><path id="lightCone" d="M625 137 453 560h458L737 137Z" fill="#ffeb9b" opacity=".14"/></g>
+ <rect id="nightOverlay" x="15" y="20" width="970" height="650" fill="#142641" opacity="0"/>
+ <ellipse id="warmPool" cx="681" cy="395" rx="310" ry="285" fill="url(#warmLight)" opacity="0"/>
+ <path id="followTrail" d="M170 581H790" stroke="#ebf6d5" stroke-width="5" stroke-dasharray="9 13" fill="none" opacity="0"/>
+ <g id="elder" transform="translate(610 260)">
+ <ellipse cx="51" cy="304" rx="67" ry="13" fill="#24442b" opacity=".14"/>
+ <g id="elderBody">
+ <g id="legL"><path d="M26 217 19 289" stroke="#f6eed8" stroke-width="27" stroke-linecap="round"/><path d="M18 292H-3" stroke="#604d37" stroke-width="17" stroke-linecap="round"/></g>
+ <g id="legR"><path d="M76 217 84 289" stroke="#eee3c8" stroke-width="27" stroke-linecap="round"/><path d="M84 292h22" stroke="#604d37" stroke-width="17" stroke-linecap="round"/></g>
+ <path d="M0 109Q51 89 102 109l7 113H-7Z" fill="#fff4d7" stroke="#ddcdae" stroke-width="2"/>
+ <path d="M15 104 42 111v94H2Zm47 7 25-7 14 101H62Z" fill="#b67b50"/><path d="M52 120v85" stroke="#dbbd87" stroke-width="2"/><g fill="#a57d51"><circle cx="53" cy="141" r="3"/><circle cx="53" cy="166" r="3"/></g>
+ <g id="armL"><path id="leftArmPath" d="M6 118Q-31 140-19 186" fill="none" stroke="#d4a178" stroke-width="19" stroke-linecap="round"/><circle id="leftPalm" cx="-19" cy="187" r="11" fill="#e2b28b"/><g id="wristWatch"><rect x="-28" y="163" width="20" height="18" rx="4" fill="#345c4d"/><rect x="-24" y="167" width="12" height="10" rx="2" fill="#a0d8b0"/></g></g>
+ <g id="armR"><path d="M96 119Q129 146 114 184" fill="none" stroke="#d4a178" stroke-width="19" stroke-linecap="round"/><circle cx="114" cy="186" r="11" fill="#e2b28b"/></g>
+ <g id="elderHead"><rect x="37" y="77" width="29" height="35" rx="12" fill="#d2a17c"/><ellipse cx="52" cy="50" rx="46" ry="52" fill="#e3b38b"/><ellipse cx="7" cy="55" rx="8" ry="12" fill="#dba87d"/><ellipse cx="97" cy="55" rx="8" ry="12" fill="#dba87d"/><path d="M9 35Q0-10 51-7q52 0 43 44l-12-18Q53 33 19 17Z" fill="#f3f1e2"/><path d="M16 35h27m16 0h27" stroke="#f6f3e7" stroke-width="5" stroke-linecap="round"/>
+ <g stroke="#506152" stroke-width="3" fill="#e2ece1" fill-opacity=".5"><rect x="17" y="39" width="29" height="24" rx="9"/><rect x="59" y="39" width="29" height="24" rx="9"/><path d="M46 45h13"/></g><g id="elderEyes" fill="#3e4e3a"><circle cx="33" cy="51" r="3"/><circle cx="73" cy="51" r="3"/></g><path d="M50 54 46 66h10" stroke="#c48f68" stroke-width="3" fill="none"/><path d="M32 75q20-14 40 0" stroke="#f7f1df" stroke-width="9" stroke-linecap="round" fill="none"/><path id="elderMouth" d="M42 83q10 10 20 0" stroke="#83523e" stroke-width="3" fill="none" stroke-linecap="round"/></g>
+ </g></g>
+ <g id="robotMover"><svg id="cartoonRobot" x="0" y="0" width="270" height="305" viewBox="0 0 500 560" aria-hidden="true"><defs><linearGradient id="shell" x1="0" y1="0" x2="1" y2=".8"><stop stop-color="#fff"/><stop offset=".55" stop-color="#f4f4e9"/><stop offset="1" stop-color="#b8c9b7"/></linearGradient><linearGradient id="edge"><stop stop-color="#92aa96"/><stop offset="1" stop-color="#d5dfcc"/></linearGradient><linearGradient id="screen" x2=".7" y2="1"><stop stop-color="#173c37"/><stop offset="1" stop-color="#082922"/></linearGradient><radialGradient id="eye"><stop stop-color="#c4faff"/><stop offset="1" stop-color="#62d8ff"/></radialGradient></defs>
+<ellipse cx="250" cy="519" rx="137" ry="17" fill="#42624c" opacity=".12"/>
+<rect x="124" y="427" width="56" height="86" rx="23" fill="#173c32"/><rect x="320" y="427" width="56" height="86" rx="23" fill="#173c32"/><rect x="135" y="435" width="12" height="65" rx="6" fill="#365a49"/><rect x="353" y="435" width="12" height="65" rx="6" fill="#365a49"/>
+<path d="M148 420h204l-20 67H168z" fill="url(#edge)"/><rect x="216" y="185" width="68" height="80" rx="18" fill="url(#edge)"/>
+<g id="botHead"><path d="M123 80 Q250 55 377 80 L386 170 Q250 200 114 170Z" fill="url(#edge)"/><rect x="108" y="67" width="277" height="119" rx="34" fill="url(#shell)" stroke="#f9fff4" stroke-width="2"/><rect x="128" y="88" width="237" height="78" rx="24" fill="url(#screen)"/><path d="M147 100h190" stroke="#416354" stroke-width="2" opacity=".5"/>
+<g id="botEyes" stroke="url(#eye)" stroke-width="10" stroke-linecap="round" fill="none"><path d="M163 132q16-27 32 0"/><path d="M299 132q16-27 32 0"/></g><rect x="235" y="123" width="25" height="15" rx="7" fill="#051c17"/><circle cx="248" cy="130" r="4" fill="#3c7465"/><path id="botMouth" d="M232 150q16 9 32 0" stroke="#8cc8ab" stroke-width="2" fill="none"/><path d="M245 64V50" stroke="#90a78f" stroke-width="5"/><circle class="cartoon-sensor" cx="245" cy="45" r="8" fill="#79b780"/></g>
+<path d="M120 258 Q250 225 380 258L365 437Q250 461 135 437Z" fill="url(#edge)"/><g id="botArmL"><path d="M125 285Q80 301 92 355" fill="none" stroke="#e9e5d4" stroke-width="25" stroke-linecap="round"/><circle cx="92" cy="355" r="16" fill="#354e41"/></g><g id="botArmR"><path d="M375 285Q420 301 409 355" fill="none" stroke="#e9e5d4" stroke-width="25" stroke-linecap="round"/><circle cx="409" cy="355" r="16" fill="#354e41"/></g><rect x="119" y="244" width="262" height="195" rx="40" fill="url(#shell)" stroke="#f8fff6" stroke-width="2"/><path d="M145 265Q250 244 355 265" stroke="#fff" stroke-width="4" fill="none"/><rect x="217" y="265" width="66" height="44" rx="13" fill="#254a3c"/><circle cx="250" cy="287" r="12" fill="#102e24"/><circle cx="250" cy="287" r="7" fill="#628c79"/><circle cx="247" cy="284" r="3" fill="#cde9d3"/>
+<text id="svgRobotChest" x="250" y="365" text-anchor="middle" font-family="'Hind Siliguri', sans-serif" font-size="26" font-weight="bold" letter-spacing="3" fill="#1b523c">বন্ধু</text><rect x="223" y="383" width="54" height="5" rx="3" fill="#b6c8b1"/><rect class="cartoon-sensor" x="235" y="383" width="30" height="5" rx="3" fill="#ffc83d"/>
+<rect x="197" y="434" width="106" height="43" rx="16" fill="#244936"/><g stroke="#b3c3ac" stroke-width="5" fill="#153426"><circle cx="224" cy="454" r="13"/><circle cx="277" cy="454" r="13"/></g><g id="wheelTreadL" stroke="#82a18b" stroke-width="4"><path d="M149 463v27m-10-14h20"/></g><g id="wheelTreadR" stroke="#82a18b" stroke-width="4"><path d="M350 463v27m-10-14h20"/></g><rect x="104" y="382" width="24" height="39" rx="10" fill="#2d513e"/><rect x="372" y="382" width="24" height="39" rx="10" fill="#2d513e"/>
+</svg></g>
+ <g id="medicine" opacity="0" transform="translate(500 420)"><ellipse cx="0" cy="129" rx="62" ry="9" fill="#24442b" opacity=".1"/><path d="M-40 35-48 127M40 35l8 92" stroke="#93734e" stroke-width="9"/><rect x="-65" y="10" width="130" height="22" rx="9" fill="#e8cb98"/><rect x="-45" y="-48" width="38" height="57" rx="9" fill="#fff8e7"/><rect x="-48" y="-57" width="44" height="15" rx="4" fill="#d88e63"/><path d="M-26-32v24m-12-12h24" stroke="#82a582" stroke-width="5"/><path d="M19-28h30l-4 38H23Z" fill="#c3e7e3" stroke="#f0fff5" stroke-width="3"/><path d="M23-9h23" stroke="#90c3cb" stroke-width="12"/></g>
+ <g id="flyingPill" opacity="0"><rect x="-14" y="-7" width="28" height="14" rx="7" fill="#fff8de"/><path d="M0-7h7a7 7 0 0 1 0 14H0Z" fill="#cf805d"/></g>
+ <g id="checkBadge" opacity="0"><circle r="28" fill="#46795b"/><path d="m-13 0 9 9 18-21" stroke="#fff9e2" stroke-width="5" fill="none" stroke-linecap="round"/></g>
+ <g id="healthPanel" opacity="0" transform="translate(395 70)" filter="url(#softShadow)"><rect width="350" height="173" rx="25" fill="#fffdf0"/><text id="svgHealthTitle" x="22" y="34" font-size="17" fill="#466448">স্বাস্থ্যের খোঁজ</text><text id="svgHealthDemo" x="326" y="34" text-anchor="end" font-size="11" fill="#81937a">ডেমো</text><path d="M20 80h40l10-16 17 38 16-55 17 34h31l13-10 15 10h150" fill="none" stroke="#bd7660" stroke-width="4" id="ecg"/><text id="svgHeartRate" x="24" y="139" font-size="21" fill="#466448">♥ হার্ট রেট</text><text x="191" y="139" font-size="21" fill="#466448">SpO₂</text><circle id="readingDot" cx="305" cy="132" r="9" fill="#91b57b"/></g>
+ <path id="scanBeam" d="M315 420Q470 300 591 435" fill="none" stroke="#85bba4" stroke-width="5" stroke-dasharray="7 9" opacity="0"/>
+ <g id="sosBadge" opacity="0" transform="translate(765 320)"><circle r="36" fill="#bd6d55"/><text y="8" text-anchor="middle" fill="white" font-family="Arial" font-size="25" font-weight="bold">SOS</text><circle id="sosRing" r="44" stroke="#c88668" fill="none" stroke-width="3"/></g>
+ <path id="messagePath" d="M330 390Q500 140 813 300" stroke="#ca8b67" stroke-width="4" stroke-dasharray="7 10" fill="none" opacity="0"/>
+ <g id="messageDot" opacity="0"><circle r="20" fill="#dba47d"/><path d="M-10-6h20V8h-20Zm0 0L0 2l10-8" stroke="#fff9e6" stroke-width="2" fill="none"/></g>
+ <g id="familyPhone" opacity="0" transform="translate(790 225)" filter="url(#softShadow)"><rect width="146" height="260" rx="26" fill="#365947"/><rect x="7" y="8" width="132" height="244" rx="21" fill="#fff9e8"/><rect x="50" y="14" width="46" height="8" rx="4" fill="#365947"/><circle cx="73" cy="83" r="34" fill="#dfcbb0"/><circle cx="73" cy="69" r="16" fill="#b2805f"/><path d="M44 108q0-39 29-27 29-12 29 27" fill="#7a9d81"/><text id="svgFamilyTitle" x="73" y="139" text-anchor="middle" font-size="18" fill="#4c684f">পরিবার</text><g id="phoneNotice"><rect x="15" y="154" width="116" height="64" rx="10" fill="#efcfb4"/><text id="svgNoticeTitle" x="73" y="179" text-anchor="middle" font-size="14" fill="#86543c">জরুরি বার্তা</text><text id="svgNoticeSub" x="73" y="201" text-anchor="middle" font-size="13" fill="#86543c">পৌঁছেছে ✓</text></g></g>
+ <g id="soundWaves" opacity="0" fill="none" stroke="#588f72" stroke-width="4" stroke-linecap="round"><path d="M415 332q18 18 0 36M430 318q32 32 0 64M447 304q45 45 0 92"/></g>
+ <g id="robotBubble" transform="translate(105 185)"><path d="M24 0h250q24 0 24 24v40q0 24-24 24H84l-20 20 1-20H24Q0 88 0 64V24Q0 0 24 0" fill="#f9fff0" stroke="#bdd0ae" stroke-width="2"/><text id="robotLine" x="149" y="51" text-anchor="middle" font-size="23" fill="#345d42"></text></g>
+ <g id="personBubble" transform="translate(510 172)"><path d="M24 0h300q24 0 24 24v40q0 24-24 24h-90l-20 20 1-20H24Q0 88 0 64V24Q0 0 24 0" fill="#fff6df" stroke="#dbc59e" stroke-width="2"/><text id="personLine" x="174" y="51" text-anchor="middle" font-size="22" fill="#725c3b"></text></g>
+ <g id="heartFloat" opacity="0" fill="#ce8b73"><path d="M0 15C-50-15-30-50 0-27 30-50 50-15 0 15Z"/></g>
+ <g id="routinePanel" opacity="0" transform="translate(405 80)" filter="url(#softShadow)">
+ <rect width="470" height="220" rx="24" fill="#fff9e8"/><text id="svgRoutineTitle" x="25" y="38" font-size="22" fill="#365947">প্রতিদিনের ছোট ছোট যত্ন</text>
+ <g id="waterCard"><rect x="20" y="60" width="205" height="140" rx="18" fill="#dcecf0"/><path d="M46 90h42l-6 65H52Z" fill="#fff" stroke="#6d9ca4" stroke-width="3"/><path id="waterFill" d="M49 110h36l-4 42H53Z" fill="#74b8cb"/><text id="svgWaterTitle" x="105" y="110" font-size="20" fill="#365947">পানি পান</text><text id="svgWaterSub" x="105" y="143" font-size="16" fill="#365947">মনে করিয়ে দিই</text></g>
+ <g id="mealCard"><rect x="240" y="60" width="210" height="140" rx="18" fill="#f0dfbd"/><circle cx="288" cy="123" r="30" fill="#fffdf0" stroke="#b59a6c" stroke-width="3"/><circle cx="288" cy="123" r="20" fill="#e4b66c"/><path d="M280 112q15-16 20 10" fill="none" stroke="#70966a" stroke-width="8"/><text id="svgMealTitle" x="330" y="110" font-size="20" fill="#365947">খাবার</text><text id="svgMealSub" x="330" y="143" font-size="16" fill="#365947">সময়মতো</text></g></g>
+ <g id="careDashboard" opacity="0" transform="translate(390 25) scale(.87)" filter="url(#softShadow)">
+ <rect width="600" height="300" rx="24" fill="#193e35"/><text id="svgDashTitle" x="24" y="36" font-size="22" fill="#fff9e8">পরিবারের ড্যাশবোর্ড</text><text id="svgDashDemo" x="575" y="34" text-anchor="end" font-size="14" fill="#f2d288">চিত্রায়িত ডেমো</text>
+ <rect x="20" y="56" width="320" height="220" rx="16" fill="#d9e7d0"/><path d="M25 220h310" stroke="#afc19d" stroke-width="4"/><rect x="45" y="85" width="68" height="78" rx="8" fill="#b5d6d6"/><path d="M79 85v78M45 124h68" stroke="#fff" stroke-width="5"/>
+ <g id="videoPerson"><path d="M160 241v-57q31-20 62 0v57" fill="#c58d67"/><circle cx="191" cy="146" r="27" fill="#bf8d67"/><path d="M166 134q25-34 50 0" fill="#ece8d8"/><path d="M181 155q10 10 20 0" fill="none" stroke="#765443" stroke-width="3"/></g>
+ <circle id="liveDot" cx="44" cy="76" r="5" fill="#c65340"/><text id="svgLiveVideo" x="57" y="81" font-size="14" fill="#365947">লাইভ ভিডিও</text>
+ <g id="dashboardVitals"><rect x="360" y="56" width="220" height="220" rx="16" fill="#fff9e8"/><text id="svgSyncTitle" x="380" y="88" font-size="18" fill="#365947">স্মার্টব্যান্ড সিঙ্ক</text><path id="dashboardTrace" d="M380 135h25l10-20 14 40 16-48 15 28h95" fill="none" stroke="#b86d55" stroke-width="4"/><text id="svgDashHeart" x="380" y="185" font-size="20" fill="#365947">♥ হৃদস্পন্দন</text><text id="svgDashSpo2" x="380" y="220" font-size="20" fill="#365947">SpO₂ · অক্সিজেন</text><text id="svgDashNote" x="380" y="253" font-size="14" fill="#6d846e">সংযুক্ত ডিভাইসের তথ্য</text></g></g>
+ <g id="featureTokens" opacity="0" fill="#fffae9" stroke="#97b38b" stroke-width="2"><circle cx="160" cy="145" r="36"/><circle cx="320" cy="105" r="36"/><circle cx="500" cy="97" r="36"/><circle cx="680" cy="110" r="36"/><circle cx="840" cy="153" r="36"/><g stroke="none" fill="#557d58" font-family="Arial" font-size="29" text-anchor="middle"><text x="160" y="155">♥</text><text x="320" y="115">♫</text><text x="500" y="107">✚</text><text x="680" y="120">⌂</text><text x="840" y="163">✓</text></g></g>
+</g>
+</svg>
+<div id="signalFlow" class="signal-flow" aria-label="সতর্কবার্তার পথ" hidden><span id="sf1">সাহায্যের সংকেত</span><i>→</i><span id="sf2">বন্ধু</span><i>→</i><span id="sf3">পরিবারের ফোন</span></div><div class="story-caption"><span id="actionNumber">01</span><span id="actionCaption"></span><span class="scene-clock" id="sceneClock"></span></div>
+</div>
+<div class="demo-note" id="demoNote">পণ্যের সুবিধার চিত্রায়ন</div>
+<footer class="bottom"><nav class="chapters" id="chapters" aria-label="বিজ্ঞাপনের দৃশ্য"></nav><p class="signature" id="signatureText">প্রযুক্তিতে যত্ন। সম্পর্কে আপন।<small id="signatureSmall">আপনার পরিবারের রোবট সঙ্গী</small></p></footer>
+<aside id="timingPanel" class="timing-panel" hidden aria-label="বিজ্ঞাপনের সময় ও গতি"><div class="timing-heading"><strong id="timingHeadingText">সময় ও গতি</strong><button id="closeTiming" aria-label="বন্ধ করুন">×</button></div><p id="timingDesc">প্রতিটি দৃশ্য কতক্ষণ চলবে ঠিক করুন।</p><label class="speed-row"><span id="speedRowLabel">অ্যানিমেশনের গতি</span> <select id="playbackSpeed"><option value="0.5" id="optSlow">0.5× — ধীরে</option><option value="0.75">0.75×</option><option value="1" selected id="optNormal">1× — স্বাভাবিক</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2" id="optFast">2× — দ্রুত</option></select></label><div id="durationRows"></div><label class="apply-all"><span id="applyAllPrefix">সব দৃশ্যে</span> <input id="allDuration" type="number" min="8" max="60" value="16" aria-label="সব দৃশ্যের সময় সেকেন্ডে"> <span id="applyAllSuffix">সেকেন্ড</span> <button id="applyAll">প্রয়োগ</button></label><div class="timing-summary" id="timingSummary"></div><button id="resetTiming">ডিফল্ট ফিরিয়ে আনুন</button><small id="timingNote">গতি বাড়ালে অ্যানিমেশন ও ভয়েস দুটোই দ্রুত হবে।</small></aside><div class="status" id="status" role="status"></div>
+</main>
+<script>
+'use strict';
+const icons={chat:'<path d="M5 5h22v16H15l-7 6v-6H5z"/><path d="M10 11h12m-12 5h8"/>',pill:'<rect x="9" y="2" width="14" height="28" rx="7" transform="rotate(40 16 16)"/><path d="m10 12 12 9"/>',heart:'<path d="M16 28 4 16C-4 4 11-3 16 8 22-3 36 4 28 16Z"/><path d="M3 16h7l3-5 5 11 3-6h8"/>',bell:'<path d="M6 23h20l-3-5v-7a7 7 0 0 0-14 0v7zM12 28h8"/>',home:'<path d="m2 14 14-12 14 12M6 12v17h20V12M13 29V18h7v11"/>',check:'<circle cx="16" cy="16" r="13"/><path d="m9 16 5 5 9-11"/>',family:'<circle cx="12" cy="9" r="5"/><path d="M2 28v-5a10 10 0 0 1 20 0v5M23 5a5 5 0 0 1 0 10m2 5a7 7 0 0 1 5 7"/>'};
+
+const scenesData = {
+  bn: [
+    {label:'পরিচয়',eyebrow:'আপনার প্রতিদিনের রোবট সঙ্গী',title:'যত্নের নতুন নাম।<br><em>বন্ধু।</em>',description:'বাংলায় কথা বলা, আপনার পরিবারের রোবট সঙ্গী।',feature:'কথা • যত্ন • সংযোগ',voice:'আমি বন্ধু। আপনার আপনজনের যত্নে, বাংলায় কথা বলা রোবট সঙ্গী।'},
+    {label:'কথা',eyebrow:'কথোপকথনে আপন · যত্নে সবসময়',title:'আপনার ভাষায়।<br><em>আপনার সঙ্গী।</em>',description:'শুধু কথা বলুন। গল্প আর আড্ডা হোক বাংলায়।',feature:'বাংলায় কথোপকথন',voice:'কথা হোক বাংলায়। গল্পে আর আড্ডায়, আমি আছি আপনার পাশে।'},
+    {label:'ওষুধ',eyebrow:'সময়মতো রিমাইন্ডার · প্রতিদিনের যত্ন',title:'ওষুধের সময়।<br><em>মনে রাখে বন্ধু।</em>',description:'ওষুধের সময় হলে, বন্ধু মনে করিয়ে দেয়।',feature:'ওষুধের রিমাইন্ডার',voice:'সময়মতো ওষুধের কথা মনে করিয়ে দিই। প্রতিদিনের যত্ন হোক আরও সহজ।'},
+    {label:'স্বাস্থ্য',eyebrow:'স্বাস্থ্যের যত্ন · সার্বক্ষণিক পর্যবেক্ষণ',title:'শরীরের খোঁজ।<br><em>সহজেই।</em>',description:'স্মার্টব্যান্ড থেকে হৃদস্পন্দন ও অক্সিজেনের তথ্য, একসঙ্গে।',feature:'স্বাস্থ্যের তথ্য পর্যবেক্ষণ',voice:'হৃদস্পন্দন আর অক্সিজেনের তথ্য, সহজেই দেখুন।'},
+    {label:'সতর্কতা',eyebrow:'জরুরি সংকেত · পরিবারের পাশে',title:'দূরে থাকলেও।<br><em>খবর পৌঁছাবে।</em>',description:'জরুরি অবস্থায় পরিবারের কাছে সতর্কবার্তা।',feature:'পরিবারের সঙ্গে সংযোগ',voice:'জরুরি অবস্থায় পরিবারের কাছে সতর্কবার্তা। দূরে থেকেও কাছের মানুষের খোঁজ।'},
+    {label:'সঙ্গে চলে',eyebrow:'রিয়েল-টাইম ট্র্যাকিং · সর্বক্ষণের সঙ্গী',title:'আপনি হাঁটুন।<br><em>বন্ধু সঙ্গে আছে।</em>',description:'রিয়েল টাইম হিউম্যান ট্র্যাকিং — আপনার চলার পথে, আপনার রোবট সঙ্গী।',feature:'ফলো মোড · রিয়েল টাইম ট্র্যাকিং',voice:'আপনি হাঁটুন, বন্ধু আপনার সঙ্গে চলবে। চলার পথেও, পাশে আছে আপনার রোবট সঙ্গী।'},
+    {label:'স্মার্ট আলো',eyebrow:'ভয়েস কমান্ড · স্মার্ট হোম নিয়ন্ত্রণ',title:'শুধু বলুন।<br><em>আলো জ্বলুক।</em>',description:'কথাতেই ঘরের আলো নিয়ন্ত্রণ।',feature:'ভয়েসে স্মার্ট লাইট নিয়ন্ত্রণ',voice:'বলুন, বন্ধু আলো জ্বালাও। আপনার কথায় ঘরের আলো জ্বলে ওঠে। স্মার্ট ঘর, আরও সহজ।'},
+    {label:'দৈনন্দিন যত্ন',eyebrow:'সুস্থ অভ্যাস · সুন্দর প্রতিদিন',title:'পানি, খাবার।<br><em>যত্ন প্রতিদিন।</em>',description:'পানি পান ও খাবারের সময় মনে করিয়ে দেওয়ার সুবিধা।',feature:'দৈনন্দিন রুটিন · সুস্থ অভ্যাস',voice:'শুধু ওষুধ নয়। পানি পান আর খাবারের সময়ও মনে করিয়ে দেওয়ার সুবিধা।'},
+    {label:'পরিবারের নজরে',eyebrow:'স্মার্ট ড্যাশবোর্ড · পরিবারের সংযোগ',title:'ঘরের খোঁজ।<br><em>পরিবারের কাছে।</em>',description:'কেয়ারগিভার ড্যাশবোর্ডে লাইভ ভিডিও ও স্মার্টব্যান্ডের তথ্য।',feature:'কেয়ারগিভার ড্যাশবোর্ড · লাইভ ভিডিও',voice:'কেয়ারগিভার ড্যাশবোর্ডে লাইভ ভিডিও আর স্মার্টব্যান্ডের তথ্য। পরিবারের খোঁজ, হাতের কাছে।'},
+    {label:'বন্ধু',eyebrow:'প্রযুক্তিতে যত্ন · সম্পর্কে আপন',title:'প্রতিটি ঘরের<br><em>জন্য বন্ধু।</em>',description:'বন্ধু — আপনার পরিবারের রোবট সঙ্গী।',feature:'বন্ধু — BONDHU',voice:'বন্ধু। প্রযুক্তিতে যত্ন, সম্পর্কে আপন। আপনার পরিবারের রোবট সঙ্গী।'}
+  ],
+  en: [
+    {label:'Intro',eyebrow:'Your Daily Robot Companion',title:'A New Era of Care.<br><em>BONDHU.</em>',description:'Bengali & English speaking smart companion for your family.',feature:'Voice • Care • Connection',voice:'I am Bondhu. Your family robot companion for daily care and warmth.'},
+    {label:'Voice',eyebrow:'Warm in Conversation · Always Caring',title:'Speaks Your Language.<br><em>Your Companion.</em>',description:'Just speak naturally. Stories, conversations and warmth.',feature:'Bilingual Voice Interaction',voice:'Talk to me anytime. I am always right by your side.'},
+    {label:'Medicine',eyebrow:'Timely Reminders · Daily Care',title:'Pill Reminders.<br><em>Never Miss a Dose.</em>',description:'When it is time for medicine, Bondhu gently reminds you.',feature:'Medication Reminders',voice:'I remind you to take your medicine on time. Daily care made easy.'},
+    {label:'Health',eyebrow:'Health Monitoring · Peace of Mind',title:'Vital Signs.<br><em>At a Glance.</em>',description:'Syncs heart rate and oxygen levels from your smartband.',feature:'Health Data Monitoring',voice:'Easily monitor your heart rate and oxygen levels anytime.'},
+    {label:'Alerts',eyebrow:'Emergency SOS · Family Connected',title:'Even from Afar.<br><em>Always Connected.</em>',description:'Instant alert notifications sent directly to family members.',feature:'Family Emergency Link',voice:'Instant alert notifications sent to your family in emergencies.'},
+    {label:'Follow',eyebrow:'Real-Time Tracking · By Your Side',title:'Wherever You Walk.<br><em>Bondhu Follows.</em>',description:'Real-time human tracking vision — follows you smoothly as you move.',feature:'Follow Mode · Real-Time Tracking',voice:'Walk around the house, Bondhu follows right beside you.'},
+    {label:'Smart Light',eyebrow:'Voice Command · Smart Home',title:'Just Say the Word.<br><em>Let There Be Light.</em>',description:'Effortlessly control your room lighting with voice commands.',feature:'Voice Smart Light Control',voice:'Simply say, Bondhu turn on the lights, and your home brightens up.'},
+    {label:'Daily Care',eyebrow:'Healthy Habits · Gentle Routines',title:'Water & Meals.<br><em>Cared for Daily.</em>',description:'Gentle reminders for staying hydrated and enjoying meals on time.',feature:'Daily Routine & Hydration',voice:'More than just medicine — gentle reminders for water and healthy meals.'},
+    {label:'Dashboard',eyebrow:'Smart Dashboard · Peace of Mind',title:'Home & Wellness.<br><em>In One Place.</em>',description:'Caregiver dashboard featuring live video and synced smartband vitals.',feature:'Caregiver Dashboard & Video',voice:'Live video and vital stats on the caregiver dashboard for complete peace of mind.'},
+    {label:'Bondhu',eyebrow:'Technology with Warmth · Family First',title:'For Every Home.<br><em>Meet Bondhu.</em>',description:'Bondhu — the loving robot companion for your family.',feature:'Bondhu — Smart Companion',voice:'Bondhu. Technology with care, family at heart. Your robot companion.'}
+  ]
+};
+
+const storiesData = {
+  bn: [
+    ['একটু একা…','দরজায় নতুন বন্ধু','হাত নেড়ে পরিচয়','এবার, একসঙ্গে'],
+    ['“বন্ধু, একটা গল্প বলো”','বন্ধু শুনছে','বাংলায় গল্প শুরু','আড্ডায় মুখে হাসি'],
+    ['ঘড়িতে ওষুধের সময়','বন্ধু মনে করিয়ে দেয়','মনে পড়ল, ওষুধ নেওয়া বাকি','প্রতিদিনের যত্ন সহজ হয়'],
+    ['স্বাস্থ্যের খোঁজ নেওয়া যাক','স্মার্টব্যান্ড থেকে তথ্য সিঙ্ক','হৃদস্পন্দনের তথ্য','অক্সিজেনের তথ্যও একসঙ্গে'],
+    ['হঠাৎ সাহায্য দরকার','SOS সংকেত','পরিবারের কাছে বার্তা যাচ্ছে','পরিবারের ফোনে সতর্কবার্তা'],
+    ['“বন্ধু, আমার সঙ্গে চলো”','মানুষটি সামনে হাঁটছেন','বন্ধু পিছনে চলেছে','থামলে, বন্ধুও থামে'],
+    ['ঘরে আলো কম','“বন্ধু, আলো জ্বালাও”','কথা বুঝে আলো নিয়ন্ত্রণ','আলোয় ভরে উঠল ঘর'],
+    ['প্রতিদিনের রুটিন','পানি পানের রিমাইন্ডার','খাবারের সময় হয়েছে','ছোট ছোট যত্ন, প্রতিদিন'],
+    ['পরিবারের ড্যাশবোর্ড','ঘরের লাইভ ভিডিও','স্মার্টব্যান্ডের তথ্য সিঙ্ক','দূরে থেকেও খোঁজ রাখুন'],
+    ['কথা বলে','যত্নের কথা মনে রাখে','আপনজনের সঙ্গে যুক্ত রাখে','বন্ধু — আপনার পরিবারের সঙ্গী']
+  ],
+  en: [
+    ['A quiet moment…','A friend arrives','A warm wave hello','Together at last'],
+    ['“Bondhu, tell me a story”','Bondhu listening…','Telling a story','Smiles and laughter'],
+    ['Time for medicine','Bondhu reminds gently','Pill taken on time','Daily care made effortless'],
+    ['Checking health vitals','Smartband data synced','Heart rate status','Oxygen levels tracked'],
+    ['Needs assistance','Emergency SOS triggered','Sending message to family','Alert received on family phone'],
+    ['“Bondhu, walk with me”','Walking across the room','Bondhu following smoothly','Stops right by your side'],
+    ['Room is getting dark','“Bondhu, lights on”','Voice recognized','Warm light fills the room'],
+    ['Daily routine','Hydration reminder','Mealtime reminder','Healthy habits everyday'],
+    ['Caregiver dashboard','Live video stream','Smartband vitals synced','Staying close from anywhere'],
+    ['Speaks with warmth','Remembers your care','Keeps family connected','Bondhu — your robot companion']
+  ]
+};
+
+const bubblesData = {
+  bn: {
+    s0: { p1: 'কেউ কি আছো?', p2: 'এসো, বন্ধু!', r: 'আমি বন্ধু। পাশে আছি!' },
+    s1: { p1: 'বন্ধু, একটা গল্প বলো', p2: 'তারপর কী হলো?', r1: 'শুনছি, বলুন…', r2: 'এক দেশে ছিল…' },
+    s2: { r1: 'ওষুধের সময় হয়েছে', r2: 'ঠিক সময়ে, প্রতিদিন।', p1: 'ওহ্, মনে করিয়ে দিলে!', p2: 'ধন্যবাদ, বন্ধু!' },
+    s3: { r1: 'স্বাস্থ্যের খোঁজ নিচ্ছি', r2: 'তথ্য একসঙ্গে দেখুন', p: 'সহজেই খোঁজ রাখা যায়!' },
+    s4: { p: 'বন্ধু, সাহায্য দরকার!', r1: 'পরিবারকে জানাচ্ছি', r2: 'সতর্কবার্তা পৌঁছেছে' },
+    s5: { p1: 'বন্ধু, সঙ্গে চলো', p2: 'এখানেই থামি।', r1: 'আমি সঙ্গে আছি!', r2: 'আপনার পাশেই আছি।' },
+    s6: { p1: 'বন্ধু, আলো জ্বালাও', p2: 'এবার বেশ আলো!', r1: 'ঠিক আছে!', r2: 'আলো জ্বালিয়ে দিলাম।' },
+    s7: { r1: 'একটু পানি পান করুন', r2: 'খাবারের সময় হয়েছে', p1: 'হ্যাঁ, পানি খাই।', p2: 'চলো, খেতে বসি।' },
+    s9: { r: 'আপনার পরিবারের বন্ধু।', p: 'পাশে থেকো, বন্ধু।' }
+  },
+  en: {
+    s0: { p1: 'Is anyone there?', p2: 'Come in, Bondhu!', r: 'I am Bondhu. By your side!' },
+    s1: { p1: 'Bondhu, tell me a story', p2: 'What happened next?', r1: 'Listening, go ahead…', r2: 'Once upon a time…' },
+    s2: { r1: 'Time for medicine', r2: 'On time, every day.', p1: 'Oh, thanks for reminding!', p2: 'Thank you, Bondhu!' },
+    s3: { r1: 'Checking vitals', r2: 'All stats together', p: 'Easy to keep track!' },
+    s4: { p: 'Bondhu, I need help!', r1: 'Alerting family…', r2: 'Alert sent to family' },
+    s5: { p1: 'Bondhu, walk with me', p2: 'Let us pause here.', r1: 'Right behind you!', r2: 'Always by your side.' },
+    s6: { p1: 'Bondhu, lights on', p2: 'Nice and bright now!', r1: 'Right away!', r2: 'Lights turned on.' },
+    s7: { r1: 'Drink some water', r2: 'Time for lunch', p1: 'Yes, let me drink.', p2: 'Let us eat.' },
+    s9: { r: 'Your family companion.', p: 'Always stay close, Bondhu.' }
+  }
+};
+
+let currentLang = 'bn';
+try{
+  const savedLang = localStorage.getItem('bondhu_lang');
+  if(savedLang === 'en' || savedLang === 'bn') currentLang = savedLang;
+}catch(e){}
+
+let scenes = scenesData[currentLang];
+let stories = storiesData[currentLang];
+
+const $=id=>document.getElementById(id),synth=window.speechSynthesis;
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let index=0,elapsed=0,paused=reduced,sound=false,last=0,audio=null,utterance=null,voiceBusy=false,token=0,statusTimer;
+const defaultDurations=[14,18,18,18,18,18,16,18,20,14];
+let durations=[...defaultDurations],playbackSpeed=1;
+try{const saved=JSON.parse(localStorage.getItem('bondhu-cartoon-timing-v1'));if(saved&&Array.isArray(saved.durations)&&saved.durations.length===scenes.length)durations=saved.durations.map((v,i)=>Number.isFinite(v)?Math.max(8,Math.min(60,v)):defaultDurations[i]);if(saved&&[.5,.75,1,1.25,1.5,2].includes(saved.speed))playbackSpeed=saved.speed}catch(e){}
+function saveTiming(){try{localStorage.setItem('bondhu-cartoon-timing-v1',JSON.stringify({durations,speed:playbackSpeed}))}catch(e){notify(currentLang==='bn'?'এই ব্রাউজারে সময়ের সেটিং সংরক্ষণ করা যাচ্ছে না।':'Cannot save timing settings.')}updateTimingSummary()}
+function updateTimingSummary(){const seconds=durations.reduce((a,b)=>a+b,0)/playbackSpeed;$('timingSummary').textContent=currentLang==='bn'?('পুরো লুপ: '+Math.floor(seconds/60)+' মিনিট '+Math.round(seconds%60)+' সেকেন্ড'):('Total Loop: '+Math.floor(seconds/60)+' min '+Math.round(seconds%60)+' sec');}
+
+function setupTiming(){
+ $('playbackSpeed').value=String(playbackSpeed);
+ scenes.forEach((s,i)=>{const row=document.createElement('label');row.className='duration-row';row.innerHTML='<span>'+String(i+1).padStart(2,'0')+' '+s.label+'</span><input type="range" min="8" max="60" step="1" value="'+durations[i]+'" aria-label="'+s.label+'"><input type="number" min="8" max="60" step="1" value="'+durations[i]+'" aria-label="'+s.label+'">';const inputs=row.querySelectorAll('input');inputs.forEach(input=>input.addEventListener('change',()=>{const value=Number(input.value);durations[i]=Number.isFinite(value)?Math.round(Math.max(8,Math.min(60,value))):defaultDurations[i];inputs.forEach(el=>el.value=durations[i]);saveTiming();if(index===i)setScene(index)}));$('durationRows').append(row)});
+ $('playbackSpeed').onchange=()=>{playbackSpeed=Number($('playbackSpeed').value);if(audio)audio.playbackRate=playbackSpeed;saveTiming()};
+ $('applyAll').onclick=()=>{const n=Number($('allDuration').value);const value=Number.isFinite(n)?Math.round(Math.max(8,Math.min(60,n))):16;durations.fill(value);$('allDuration').value=value;syncInputs();saveTiming();setScene(index)};
+ $('resetTiming').onclick=()=>{durations=[...defaultDurations];playbackSpeed=1;$('playbackSpeed').value='1';syncInputs();saveTiming();setScene(index)};
+ $('timingButton').onclick=()=>{const open=$('timingPanel').hidden;$('timingPanel').hidden=!open;$('timingButton').setAttribute('aria-expanded',String(open));if(open)$('playbackSpeed').focus()};
+ $('closeTiming').onclick=closeTiming;
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('timingPanel').hidden)closeTiming()});
+ updateTimingSummary();
+}
+function closeTiming(){$('timingPanel').hidden=true;$('timingButton').setAttribute('aria-expanded','false');$('timingButton').focus()}
+function syncInputs(){document.querySelectorAll('.duration-row').forEach((row,i)=>row.querySelectorAll('input').forEach(el=>el.value=durations[i]))}
+
+const clamp=n=>Math.max(0,Math.min(1,n));
+const ease=(t,a,b)=>{const x=clamp((t-a)/(b-a));return x*x*(3-2*x)};
+function attr(id,key,value){$(id).setAttribute(key,value)}
+function opacity(id,value){attr(id,'opacity',Math.max(0,Math.min(1,value)))}
+function move(id,x,y,rotation=0,cx=0,cy=0){attr(id,'transform',`translate(${x} ${y}) rotate(${rotation} ${cx} ${cy})`)}
+function bubble(id,text,visible){$(id==='robotBubble'?'robotLine':'personLine').textContent=text;opacity(id,visible)}
+
+function renderCartoon(t){
+ t=clamp(t);const phase=Math.min(3,Math.floor(t*4));const wave=Math.sin(t*Math.PI*16),slow=Math.sin(t*Math.PI*6);
+ $('actionNumber').textContent=String(phase+1).padStart(2,'0');$('actionCaption').textContent=stories[index][phase];$('sceneClock').textContent=(Math.max(0,(durations[index]*(1-t)/playbackSpeed))).toFixed(0)+'s';
+ const reveal=index===9&&t>=.72?1:0;
+ $('billboard').classList.toggle('showcase',reveal>.01);
+ $('familyShowcase').style.opacity=reveal;
+ $('familyShowcase').setAttribute('aria-hidden',String(reveal<.01));
+ $('familyImage').style.transform=`scale(${1+ease(t,.72,1)*.02})`;
+ $('brandTag').textContent=(currentLang==='bn'?'রোবট সঙ্গী · ':'Robot Companion · ')+String(index+1).padStart(2,'0')+' / '+String(scenes.length).padStart(2,'0');
+ if(reveal>.01)$('actionCaption').textContent=currentLang==='bn'?'প্রতিটি ঘরের জন্য বন্ধু':'Bondhu for Every Home';
+ const flowVisible=index===4&&t>.4;
+ $('signalFlow').hidden=!flowVisible;
+ $('signalFlow').querySelectorAll('span').forEach((node,i)=>node.classList.toggle('active',i<=(t<.5?0:t<.75?1:2)));
+ $('cartoonTitle').textContent=scenes[index].feature;$('cartoonDesc').textContent=stories[index].join(currentLang==='bn'?'। ':'. ');
+ ['routinePanel','careDashboard','medicine','flyingPill','checkBadge','healthPanel','scanBeam','sosBadge','messagePath','messageDot','familyPhone','soundWaves','heartFloat','featureTokens','followTrail'].forEach(id=>opacity(id,0));
+ let hand=null;let rx=155,ry=282,ex=635,ey=260,lean=0,leftArm=0,rightArm=0,headTilt=0,walking=0,robotTalking=false,personTalking=false;
+ opacity('nightOverlay',0);opacity('warmPool',0);opacity('lightCone',.14);opacity('phoneNotice',1);opacity('sofa',1);
+ attr('clockHand','transform',`rotate(${t*24})`);attr('clouds','transform',`translate(${slow*9} 0)`);
+ bubble('robotBubble','',0);bubble('personBubble','',0);
+ const b=bubblesData[currentLang];
+ if(index===0){
+  rx=-240+395*ease(t,.06,.55);ry+=Math.sin(t*40)*2*(1-ease(t,.5,.6));headTilt=slow*3;
+  bubble('personBubble',phase<2?b.s0.p1:b.s0.p2,ease(t,.04,.12));
+  bubble('robotBubble',b.s0.r,ease(t,.48,.58));
+  robotTalking=t>.55;rightArm=-35*ease(t,.55,.65)+wave*12*ease(t,.6,.7);personTalking=t<.4;
+  opacity('heartFloat',ease(t,.78,.85));move('heartFloat',540,245-25*ease(t,.8,1));
+ }else if(index===1){
+  bubble('personBubble',phase<2?b.s1.p1:b.s1.p2,ease(t,.02,.1));
+  bubble('robotBubble',phase<2?b.s1.r1:b.s1.r2,ease(t,.23,.32));
+  robotTalking=t>.45;personTalking=t<.3||t>.8;rightArm=personTalking?-22+wave*7:0;headTilt=slow*4;
+  opacity('soundWaves',t>.45?.45+.35*wave:0);opacity('heartFloat',ease(t,.78,.88));move('heartFloat',525,180-slow*12);
+ }else if(index===2){
+  opacity('medicine',ease(t,0,.1));ex=590;
+  attr('clockHand','transform',`rotate(${ease(t,0,.2)*360})`);
+  bubble('robotBubble',t<.68?b.s2.r1:b.s2.r2,ease(t,.15,.25));robotTalking=t>.2&&t<.5;
+  bubble('personBubble',t<.68?b.s2.p1:b.s2.p2,ease(t,.4,.5));
+  leftArm=65*ease(t,.44,.55)*(1-ease(t,.78,.87));
+  const reach=ease(t,.56,.76);opacity('flyingPill',ease(t,.5,.54)*(1-ease(t,.76,.8)));move('flyingPill',482+160*reach,411-68*reach-55*Math.sin(reach*Math.PI),reach*140);
+  const reachOut=ease(t,.39,.54),release=ease(t,.79,.94);hand=[(-19+(-89)*reachOut+160*reach)*(1-release)-19*release,(187-36*reachOut-68*reach-55*Math.sin(reach*Math.PI))*(1-release)+187*release];leftArm=0;
+  opacity('checkBadge',ease(t,.82,.9));move('checkBadge',500,362);headTilt=slow*2;
+ }else if(index===3){
+  ex=620;leftArm=55*ease(t,.1,.24)*(1-ease(t,.87,1));
+  opacity('healthPanel',ease(t,.22,.34));opacity('scanBeam',ease(t,.2,.3)*(.55+.25*wave));attr('scanBeam','stroke-dashoffset',-t*500);
+  attr('ecg','stroke-dasharray','460');attr('ecg','stroke-dashoffset',460*(1-ease(t,.3,.75)));attr('readingDot','r',8+wave*2);
+  bubble('robotBubble',t<.55?b.s3.r1:b.s3.r2,ease(t,.02,.12));robotTalking=t<.22||t>.7;
+  bubble('personBubble',b.s3.p,ease(t,.78,.88));
+ }else if(index===4){
+  ex=604;lean=17*ease(t,.04,.22)*(1-ease(t,.65,.85));leftArm=-28*ease(t,.15,.3);rightArm=-50*ease(t,.15,.3);
+  bubble('personBubble',b.s4.p,ease(t,.1,.2)*(1-ease(t,.48,.58)));
+  bubble('robotBubble',t<.6?b.s4.r1:b.s4.r2,ease(t,.28,.38));robotTalking=t>.3;
+  opacity('sosBadge',ease(t,.22,.3)*(1-ease(t,.62,.72)));attr('sosRing','r',43+9*(.5+.5*slow));
+  opacity('messagePath',ease(t,.38,.46)*(1-ease(t,.8,.9)));attr('messagePath','stroke-dashoffset',-t*280);
+  const q=ease(t,.42,.74);opacity('messageDot',t>.42&&t<.75?1:0);move('messageDot',(1-q)*(1-q)*330+2*(1-q)*q*500+q*q*813,(1-q)*(1-q)*390+2*(1-q)*q*140+q*q*300);
+  opacity('familyPhone',ease(t,.6,.72));opacity('phoneNotice',ease(t,.75,.84));move('familyPhone',790+(t>.75&&t<.86?wave*4:0),225);
+ }else if(index===5){
+  opacity('sofa',.4);const walk=ease(t,.2,.78);ex=430+350*walk;rx=55+350*ease(t,.25,.82);walking=t>.2&&t<.8?Math.sin(t*80):0;ey-=Math.abs(walking)*5;ry+=Math.sin(t*60)*2;
+  opacity('followTrail',ease(t,.15,.25));attr('followTrail','stroke-dashoffset',-t*150);
+  bubble('personBubble',t<.45?b.s5.p1:b.s5.p2,ease(t,.02,.08));bubble('robotBubble',t<.8?b.s5.r1:b.s5.r2,ease(t,.2,.3));robotTalking=t>.25&&t<.4;leftArm=walking*14;rightArm=-walking*14;
+ }else if(index===6){
+  const light=ease(t,.48,.65);opacity('nightOverlay',.64*(1-light));opacity('warmPool',.62*light);opacity('lightCone',.08+.65*light);
+  bubble('personBubble',t<.55?b.s6.p1:b.s6.p2,ease(t,.12,.23));bubble('robotBubble',t<.55?b.s6.r1:b.s6.r2,ease(t,.34,.44));
+  rightArm=-45*ease(t,.16,.3)*(1-ease(t,.65,.8));robotTalking=t>.35&&t<.52;personTalking=t>.12&&t<.3;
+  opacity('soundWaves',t>.28&&t<.52?.5+.3*wave:0);opacity('checkBadge',ease(t,.72,.85));move('checkBadge',815,210);
+ }else if(index===7){
+  opacity('routinePanel',ease(t,.04,.14));opacity('waterCard',t<.5?1:.55);opacity('mealCard',t<.5?.45:1);
+  attr('waterFill','transform',`translate(0 ${slow*2})`);
+  bubble('robotBubble',t<.5?b.s7.r1:b.s7.r2,ease(t,.18,.28));
+  bubble('personBubble',t<.5?b.s7.p1:b.s7.p2,ease(t,.38,.46));robotTalking=t>.2&&t<.38||t>.55&&t<.72;rightArm=-24+slow*6;
+ }else if(index===8){
+  opacity('careDashboard',ease(t,.04,.16));opacity('dashboardVitals',ease(t,.4,.58));opacity('liveDot',.6+.4*Math.abs(wave));
+  move('videoPerson',slow*3,0);attr('dashboardTrace','stroke-dasharray','260');attr('dashboardTrace','stroke-dashoffset',260*(1-ease(t,.5,.85)));
+  robotTalking=t>.2&&t<.45;
+ }else{
+  rx=220;ex=595;opacity('featureTokens',ease(t,.1,.24));move('featureTokens',0,slow*7);
+  bubble('robotBubble',b.s9.r,ease(t,.3,.4));bubble('personBubble',b.s9.p,ease(t,.5,.6));
+  rightArm=-30+wave*10;headTilt=slow*3;robotTalking=t>.3&&t<.55;
+  opacity('heartFloat',ease(t,.62,.76));move('heartFloat',545,300-40*ease(t,.65,1));
+ }
+ attr('wheelTreadL','transform',`rotate(${rx*2} 149 476)`);attr('wheelTreadR','transform',`rotate(${rx*2} 350 476)`);move('botArmL',0,0,index===2?-25*ease(t,.15,.3):slow*4,125,285);
+ move('botArmR',0,0,index===0&&t>.5?-125+wave*15:index===1?-25+slow*12:index===9?-135+wave*10:slow*4,375,285);
+ move('robotMover',rx,ry);move('elder',ex,ey);move('elderBody',0,0,lean,51,270);
+ const hx=hand?hand[0]:-19,hy=hand?hand[1]:187;attr('leftArmPath','d',hand?`M6 118Q${hx-12} ${hy-25} ${hx} ${hy}`:'M6 118Q-31 140-19 186');attr('leftPalm','cx',hx);attr('leftPalm','cy',hy);move('wristWatch',hx+19,hy-187);
+ move('armL',0,0,leftArm,6,118);move('armR',0,0,rightArm,96,119);move('elderHead',0,0,headTilt,52,95);
+ move('legL',0,0,walking*15,26,217);move('legR',0,0,-walking*15,76,217);
+ attr('botHead','transform',`rotate(${slow*2} 250 175)`);
+ const blink=(t>.34&&t<.355)||(t>.74&&t<.755);attr('botEyes','transform',`translate(0 ${blink?119:0}) scale(1 ${blink?.08:1})`);
+ attr('elderEyes','opacity',blink?.1:1);
+ attr('botMouth','d',robotTalking?`M232 150q16 ${8+Math.abs(wave)*16} 32 0`:'M232 150q16 9 32 0');
+ attr('elderMouth','d',personTalking?`M42 83q10 ${6+Math.abs(wave)*13} 20 0`:'M42 83q10 10 20 0');
+}
+
+const buttons=scenes.map((scene,i)=>{const b=document.createElement('button');b.className='chapter';b.innerHTML='<span class="track"><span class="fill"></span></span>'+scene.label;b.setAttribute('aria-label',(currentLang==='bn'?'দৃশ্য ':'Scene ')+(i+1)+': '+scene.label);b.addEventListener('click',()=>setScene(i));$('chapters').append(b);return b});
+function notify(message){clearTimeout(statusTimer);$('status').textContent=message;statusTimer=setTimeout(()=>$('status').textContent='',6000)}
+function stopVoice(){token++;if(audio){audio.pause();audio.onended=null;audio.onerror=null;audio=null}if(synth)synth.cancel();utterance=null;voiceBusy=false}
+function fallbackVoice(id){
+ if(id!==token||!sound||paused)return;
+ const voices=synth?synth.getVoices():[];
+ let voice=null;
+ if(currentLang==='bn'){
+  voice=voices.find(v=>v.lang.toLowerCase()==='bn-bd')||voices.find(v=>/^bn(?:-|_|$)/i.test(v.lang));
+  if(!voice){voiceBusy=false;sound=false;updateSound();notify('বাংলা অডিও পাওয়া যায়নি। billboard-assets ফোল্ডারটি সঙ্গে রাখুন।');return}
+ }else{
+  voice=voices.find(v=>/^en(?:-|_|$)/i.test(v.lang))||voices[0]||null;
+ }
+ utterance=new SpeechSynthesisUtterance(scenes[index].voice);
+ if(voice){utterance.voice=voice;utterance.lang=voice.lang;}else{utterance.lang=currentLang==='bn'?'bn-BD':'en-US';}
+ utterance.rate=.95*playbackSpeed;
+ utterance.onend=()=>{if(id===token)voiceBusy=false};
+ utterance.onerror=()=>{if(id===token){voiceBusy=false;notify(currentLang==='bn'?'ভয়েস চালু করা যায়নি।':'Voice could not start.')}};
+ synth.speak(utterance);
+}
+function speak(){
+ stopVoice();if(!sound||paused||document.hidden)return;const id=token;voiceBusy=true;
+ if(currentLang==='en'){fallbackVoice(id);return;}
+ audio=new Audio('billboard-assets/voice-'+index+'.mp3');audio.playbackRate=playbackSpeed;audio.currentTime=elapsed/1000;audio.onended=()=>{if(id===token)voiceBusy=false};let failed=false;
+ const fail=error=>{if(id!==token||failed)return;failed=true;if(error&&error.name==='NotAllowedError'){voiceBusy=false;sound=false;updateSound();notify(currentLang==='bn'?'শব্দ চালু করতে ভয়েস বোতামে চাপুন।':'Click voice button to enable sound.')}else fallbackVoice(id)};
+ audio.onerror=()=>fail();audio.play().catch(fail);
+}
+function updateSound(){$('sound').textContent=currentLang==='bn'?(sound?'♫ বাংলা ভয়েস চালু আছে':'♫ বাংলা ভয়েস চালু'):(sound?'♫ English Voice ON':'♫ English Voice');$('sound').setAttribute('aria-pressed',String(sound))}
+function updatePause(){
+ document.body.classList.toggle('paused',paused);
+ $('pause').textContent=currentLang==='bn'?(paused?'▶ চালু':'Ⅱ বিরতি'):(paused?'▶ Play':'Ⅱ Pause');
+ $('pause').setAttribute('aria-pressed',String(paused));
+ $('pause').setAttribute('aria-label',currentLang==='bn'?(paused?'অ্যানিমেশন চালু করুন':'অ্যানিমেশন থামান'):(paused?'Play Animation':'Pause Animation'));
+ const vid=$('trackingVideoEl');if(vid){if(paused){try{vid.pause()}catch(e){}}else if(index===5){try{vid.play().catch(()=>{})}catch(e){}}}
+}
+function applyLanguage(lang){
+ currentLang=lang;
+ try{localStorage.setItem('bondhu_lang',lang);}catch(e){}
+ scenes=scenesData[currentLang];
+ stories=storiesData[currentLang];
+ $('langToggle').textContent=currentLang==='bn'?'EN':'বাং';
+ $('langToggle').setAttribute('aria-label',currentLang==='bn'?'Switch to English':'বাংলায় পরিবর্তন করুন');
+ $('timingButton').textContent=currentLang==='bn'?'◷ সময় ও গতি':'◷ Timing & Speed';
+ $('fullscreen').textContent=currentLang==='bn'?'⛶ পূর্ণ পর্দা':'⛶ Fullscreen';
+ $('brandName').innerHTML=currentLang==='bn'?'বন্ধু <span class="brand-subname">BONDHU</span><small>যত্ন · সংযোগ · আপনজন</small>':'BONDHU <span class="brand-subname">বন্ধু</span><small>Care · Connect · Family</small>';
+ $('signatureText').innerHTML=currentLang==='bn'?'প্রযুক্তিতে যত্ন। সম্পর্কে আপন。<small id="signatureSmall">আপনার পরিবারের রোবট সঙ্গী</small>':'Care through technology. Family at heart.<small id="signatureSmall">Your Family Robot Companion</small>';
+ $('demoNote').textContent=currentLang==='bn'?'পণ্যের সুবিধার চিত্রায়ন':'Product Benefit Showcase';
+ $('trackingVideoLabel').innerHTML=currentLang==='bn'?'রিয়েল-টাইম হিউম্যান ট্র্যাকিং <span>ক্যামেরা ভিশনে মানুষকে শনাক্ত করে সঙ্গে চলার প্রযুক্তি</span>':'Real-Time Human Tracking <span>Vision AI detects and follows you in real-time</span>';
+ $('conceptLabel').innerHTML=currentLang==='bn'?'ডেস্ক · মিনি · টল <span>ভবিষ্যৎ ধারণা-চিত্র</span>':'Desk · Mini · Tall <span>Future Concept</span>';
+ $('sf1').textContent=currentLang==='bn'?'সাহায্যের সংকেত':'SOS Signal';
+ $('sf2').textContent=currentLang==='bn'?'বন্ধু':'Bondhu';
+ $('sf3').textContent=currentLang==='bn'?'পরিবারের ফোন':'Family Phone';
+ if($('svgRobotChest'))$('svgRobotChest').textContent=currentLang==='bn'?'বন্ধু':'BONDHU';
+ $('svgHealthTitle').textContent=currentLang==='bn'?'স্বাস্থ্যের খোঁজ':'Health Vitals';
+ $('svgHealthDemo').textContent=currentLang==='bn'?'ডেমো':'Demo';
+ $('svgHeartRate').textContent=currentLang==='bn'?'♥ হার্ট রেট':'♥ Heart Rate';
+ $('svgFamilyTitle').textContent=currentLang==='bn'?'পরিবার':'Family';
+ $('svgNoticeTitle').textContent=currentLang==='bn'?'জরুরি বার্তা':'Emergency Alert';
+ $('svgNoticeSub').textContent=currentLang==='bn'?'পৌঁছেছে ✓':'Received ✓';
+ $('svgRoutineTitle').textContent=currentLang==='bn'?'প্রতিদিনের ছোট ছোট যত্ন':'Daily Gentle Care';
+ $('svgWaterTitle').textContent=currentLang==='bn'?'পানি পান':'Hydration';
+ $('svgWaterSub').textContent=currentLang==='bn'?'মনে করিয়ে দিই':'Reminder';
+ $('svgMealTitle').textContent=currentLang==='bn'?'খাবার':'Healthy Meals';
+ $('svgMealSub').textContent=currentLang==='bn'?'সময়মতো':'On Time';
+ $('svgDashTitle').textContent=currentLang==='bn'?'পরিবারের ড্যাশবোর্ড':'Family Dashboard';
+ $('svgDashDemo').textContent=currentLang==='bn'?'চিত্রায়িত ডেমো':'Live Demo';
+ $('svgLiveVideo').textContent=currentLang==='bn'?'লাইভ ভিডিও':'Live Video';
+ $('svgSyncTitle').textContent=currentLang==='bn'?'স্মার্টব্যান্ড সিঙ্ক':'Smartband Sync';
+ $('svgDashHeart').textContent=currentLang==='bn'?'♥ হৃদস্পন্দন':'♥ Heart Rate';
+ $('svgDashSpo2').textContent=currentLang==='bn'?'SpO₂ · অক্সিজেন':'SpO₂ · Oxygen';
+ $('svgDashNote').textContent=currentLang==='bn'?'সংযুক্ত ডিভাইসের তথ্য':'Synced Device Vitals';
+ $('timingHeadingText').textContent=currentLang==='bn'?'সময় ও গতি':'Timing & Speed';
+ $('timingDesc').textContent=currentLang==='bn'?'প্রতিটি দৃশ্য কতক্ষণ চলবে ঠিক করুন।':'Set duration for each scene.';
+ $('speedRowLabel').textContent=currentLang==='bn'?'অ্যানিমেশনের গতি':'Playback Speed';
+ $('optSlow').textContent=currentLang==='bn'?'0.5× — ধীরে':'0.5× — Slow';
+ $('optNormal').textContent=currentLang==='bn'?'1× — স্বাভাবিক':'1× — Normal';
+ $('optFast').textContent=currentLang==='bn'?'2× — দ্রুত':'2× — Fast';
+ $('applyAllPrefix').textContent=currentLang==='bn'?'সব দৃশ্যে':'All scenes:';
+ $('applyAllSuffix').textContent=currentLang==='bn'?'সেকেন্ড':'seconds';
+ $('applyAll').textContent=currentLang==='bn'?'প্রয়োগ':'Apply';
+ $('resetTiming').textContent=currentLang==='bn'?'ডিফল্ট ফিরিয়ে আনুন':'Reset Defaults';
+ $('timingNote').textContent=currentLang==='bn'?'গতি বাড়ালে অ্যানিমেশন ও ভয়েস দুটোই দ্রুত হবে।':'Changing speed adjusts animation & voice rate.';
+ scenes.forEach((s,i)=>{if(buttons[i]){buttons[i].innerHTML='<span class="track"><span class="fill"></span></span>'+s.label;buttons[i].setAttribute('aria-label',(currentLang==='bn'?'দৃশ্য ':'Scene ')+(i+1)+': '+s.label);}});
+ const rows=$('durationRows').querySelectorAll('.duration-row');rows.forEach((row,i)=>{const span=row.querySelector('span');if(span&&scenes[i])span.textContent=String(i+1).padStart(2,'0')+' '+scenes[i].label;});
+ updateSound();
+ updatePause();
+ updateTimingSummary();
+ setScene(index);
+}
+function setScene(next){
+ index=(next+scenes.length)%scenes.length;elapsed=0;const s=scenes[index];
+ $('billboard').dataset.scene=index;
+ $('headline').innerHTML=s.title;
+ $('eyebrow').textContent=s.eyebrow;
+ $('description').textContent=s.description;
+ $('feature').textContent=s.feature;
+ $('sceneNumber').textContent=String(index+1).padStart(2,'0')+' / '+String(scenes.length).padStart(2,'0');
+ ['copy'].forEach(id=>{const e=$(id);e.classList.remove('entrance');void e.offsetWidth;e.classList.add('entrance')});
+ buttons.forEach((b,i)=>{b.setAttribute('aria-current',String(i===index));b.querySelector('.fill').style.width=i<index?'100%':'0%'});
+ renderCartoon(0);
+ speak();
+ const vid=$('trackingVideoEl');
+ if(index===5){try{vid.currentTime=0;vid.play().catch(()=>{})}catch(e){}}else{try{vid.pause()}catch(e){}}
+}
+$('langToggle').onclick=()=>{applyLanguage(currentLang==='bn'?'en':'bn');};
+$('sound').onclick=()=>{sound=!sound;updateSound();if(sound){if(paused){paused=false;updatePause()}elapsed=0;speak()}else stopVoice()};
+$('pause').onclick=()=>{paused=!paused;updatePause();if(paused)stopVoice();else{speak()}};
+$('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch(e){notify(currentLang==='bn'?'এই ব্রাউজারে পূর্ণ পর্দা চালু করা যায়নি। F11 ব্যবহার করুন।':'Could not activate fullscreen. Use F11.')}};
+document.addEventListener('visibilitychange',()=>{last=0;if(document.hidden)stopVoice();else if(sound&&!paused){speak()}});
+document.addEventListener('keydown',e=>{if(e.target.closest('button,input,select,textarea')||e.altKey||e.ctrlKey||e.metaKey)return;if(e.code==='Space'){e.preventDefault();$('pause').click()}else if(e.key==='ArrowRight')setScene(index+1);else if(e.key==='ArrowLeft')setScene(index-1);else if(e.key.toLowerCase()==='m')$('sound').click();else if(e.key.toLowerCase()==='f')$('fullscreen').click()});
+function tick(now){if(last&&!paused&&!document.hidden){elapsed+=Math.min(now-last,150)*playbackSpeed;const duration=durations[index]*1000;buttons[index].querySelector('.fill').style.width=Math.min(elapsed/duration*100,100)+'%';renderCartoon(elapsed/duration);if(elapsed>=duration)setScene(index+1)}last=now;requestAnimationFrame(tick)}
+if(new URLSearchParams(location.search).has('clean'))document.body.classList.add('clean');
+setupTiming();applyLanguage(currentLang);updatePause();requestAnimationFrame(tick);setTimeout(()=>document.body.classList.remove('show-controls'),6500);
+</script>
+</body>
+</html>
